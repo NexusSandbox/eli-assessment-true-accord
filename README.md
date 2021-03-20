@@ -33,4 +33,14 @@ Mock internal administration tool to manage client debts.
   * Use static analysis tools
   * Document all externally exposed classes/methods
   * Document all tests with accurate descriptions of intent, requirement, and expected result
+  * Add logging at critical points in logic
 * Ensure all tests continue to pass
+
+## [Initial Design Diagram](https://excalidraw.com/#json=6197044154728448,MAskeqL7Z6SHRkt9LsDu6A)
+
+## Assumptions
+* Debts do not consider interest, additional fees, or over/under payments
+* Debt manager does not provide any mechanism to update existing data (read-only)
+* Scale is currently unknown, and thus may need to account for unbounded lists
+* (Pending question) Payments can only be made through a payment plan
+  * API does not provide a way to associate a payment to a debt without a plan
