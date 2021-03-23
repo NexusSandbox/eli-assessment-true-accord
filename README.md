@@ -39,7 +39,14 @@ Mock internal administration tool to manage client debts.
     * Add logging at critical points in logic
 * Ensure all tests continue to pass
 
-## [Initial Design Diagram](https://excalidraw.com/#json=6197044154728448,MAskeqL7Z6SHRkt9LsDu6A)
+## [Initial Design Diagram](https://excalidraw.com/#json=4713253091409920,gnH0Pgw1gomnldl30SsccQ)
+
+## Key Functional Logic Locations/Notes
+
+* [eli.assessment.true_accord.Debt]: Core functional-driver for the app, and holds the key logic endpoints
+* [eli.assessment.true_accord.App]: Makes the initial call into the external API endpoints, and stitches the
+  Debt objects together
+* [eli.assessment.true_accord.client.TrueAccordClient]: Manager service that handles the TrueAccord endpoint calls
 
 ## Assumptions
 
@@ -56,10 +63,19 @@ Mock internal administration tool to manage client debts.
 * Note: I created this on a Windows 10 machine, with an IntelliJ IDE 2020.3
   * I would build this as an executable jar, but time constraints...
 * Ensure your system has the documented prerequisites installed and configured
-* Download & install IntelliJ IDE 2020.3
-  * Configure this according to your own preferences, but you will need to configure the IDE to have access to the
-    appropriate Java and Gradle locations on the system
-* Start `New project from version control...` and enter the Git clone URL for this project
+* Clone the project to the local system using the Git Clone URL for the project
+  * Open a terminal application
+  * Navigate to the same location as the root of the project on the system
+  * Enter the following command into the terminal:
   > gradle build
-* Run project
+* Run project from the same location in the terminal
   > gradle run
+
+## Post-Implementation Thoughts
+
+* Although this was not algorithmically challenging, this I think is more indicative of a real world use-case (even if it was greatly simplified)
+  * This was a fun little toy project that touched on a lot of fundamentals and helped me display what I can do
+* If I had more time, and this was an actual production implementation I would likely add the following to this project:
+  * More robust testing (e.g. Add Mocking; More Integration, and Performance tests, etc.)
+  * Sub-divide the client endpoint calls into bound chunks to limit the memory heap size
+  * If this was bound to a database, I would instead query for these results and tie them together prior to pulling them into the app memory
