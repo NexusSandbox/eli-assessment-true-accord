@@ -9,7 +9,6 @@ repositories {
 }
 
 val jacksonVersion = "2.12.2"
-val googleHttpClientVersion = "1.39.1"
 val floggerVersion = "0.5.1"
 
 dependencies {
@@ -21,9 +20,6 @@ dependencies {
 
     // General utility library
     implementation("com.google.guava:guava:30.1.1-jre")
-    // HTTP Client
-    implementation("com.google.http-client:google-http-client:${googleHttpClientVersion}")
-    implementation("com.google.http-client:google-http-client-jackson2:${googleHttpClientVersion}")
     // JSON interpreter
     implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")

@@ -1,6 +1,5 @@
 package eli.assessment.true_accord.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import eli.assessment.true_accord.Debt;
 import eli.assessment.true_accord.api.APIDebt;
 import eli.assessment.true_accord.api.APIPayment;
@@ -13,9 +12,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Performs basic validation for ensuring the {@link Debt} logic meets requirements
+ */
 public class DebtTest {
-    final ObjectMapper mapper = new ObjectMapper();
-
+    /**
+     * Validates {@link Debt#isInPaymentPlan} for {@link Debt} with no associated {@link APIPaymentPlan}
+     * <p/>
+     * Expected: {@link Debt#isInPaymentPlan} -> false
+     */
     @Test
     public void validateDebtWithNoPaymentPlanIsNotInRepayment() {
         final APIDebt apiDebt  = new APIDebt(0, 1);
@@ -24,6 +29,11 @@ public class DebtTest {
                                "Expected a Debt not associated to a paymentPlan to NOT be in repaymentplan");
     }
 
+    /**
+     * Validates {@link Debt#isInPaymentPlan} for {@link Debt} with zero balance in associated {@link APIPaymentPlan}
+     * <p/>
+     * Expected: {@link Debt#isInPaymentPlan} -> false
+     */
     @Test
     public void validateDebtWithZeroBalanceIsNotInRepayment() {
         final APIDebt apiDebt = new APIDebt(0, 1);
@@ -38,6 +48,11 @@ public class DebtTest {
                                "Expected a Debt with a $0 balance to NOT be in repayment");
     }
 
+    /**
+     * Validates {@link Debt#isInPaymentPlan} for {@link Debt} with non-zero balance in associated {@link APIPaymentPlan}
+     * <p/>
+     * Expected: {@link Debt#isInPaymentPlan} -> true
+     */
     @Test
     public void validateDebtWithNonZeroBalanceIsInRepayment() {
         final APIDebt apiDebt = new APIDebt(0, 1);
@@ -52,6 +67,11 @@ public class DebtTest {
                               "Expected a Debt with a non-zero balance to be in repayment");
     }
 
+    /**
+     * Validates {@link Debt#remainingAmount} for {@link Debt} with no associated {@link APIPaymentPlan}
+     * <p/>
+     * Expected: {@link Debt#remainingAmount} -> {@link APIDebt#amount}
+     */
     @Test
     public void validateDebtWithNoPaymentPlanRemainingAmountMatchesOriginalDebt() {
         final APIDebt apiDebt  = new APIDebt(0, 1f);
@@ -61,6 +81,11 @@ public class DebtTest {
                                 "Expected a debt's remaining amount with no payment plan to match the original debt");
     }
 
+    /**
+     * Validates {@link Debt#remainingAmount} for {@link Debt} with associated {@link APIPaymentPlan} and existing {@link APIPayment}s
+     * <p/>
+     * Expected: {@link Debt#remainingAmount} -> {@link APIPaymentPlan#amountToPay} - (All {@link APIPayment} objects)
+     */
     @Test
     public void validateDebtWithRemainingAmountIsReducedByPayments() {
         final APIDebt apiDebt = new APIDebt(0, 100);
@@ -79,6 +104,11 @@ public class DebtTest {
                                 "Expected a debt's remaining amount to be reduced by the provided payments");
     }
 
+    /**
+     * Validates {@link Debt#remainingAmount} for {@link Debt} with associated {@link APIPaymentPlan} and existing {@link APIPayment}s that exceed amount due
+     * <p/>
+     * Expected: {@link Debt#remainingAmount} -> 0
+     */
     @Test
     public void validateDebtWithRemainingAmountIsZeroIfOverpayment() {
         final APIDebt apiDebt = new APIDebt(0, 100);
@@ -97,6 +127,11 @@ public class DebtTest {
                                 "Expected a debt's remaining amount to be 0, if payments exceed payment amount");
     }
 
+    /**
+     * Validates {@link Debt#nextPaymentDueDate} for {@link Debt} with no associated {@link APIPaymentPlan}
+     * <p/>
+     * Expected: {@link Debt#nextPaymentDueDate} -> null
+     */
     @Test
     public void validateDebtWithNoPaymentPlanDoesNotHaveDueDate() {
         final APIDebt apiDebt  = new APIDebt(0, 100);
@@ -105,6 +140,11 @@ public class DebtTest {
                               "Expected a debt's due date to be null if not on payment plan");
     }
 
+    /**
+     * Validates {@link Debt#nextPaymentDueDate} for {@link Debt} with associated {@link APIPaymentPlan} with {@link InstallmentFrequency#WEEKLY} installments in recent past
+     * <p/>
+     * Expected: {@link Debt#nextPaymentDueDate} -> tomorrow's date
+     */
     @Test
     public void validateDebtWithPaymentPlanHasExpectedWeeklyDueDate() {
         final APIDebt   apiDebt   = new APIDebt(0, 100);
@@ -122,6 +162,11 @@ public class DebtTest {
                                 "Expected a debt with a recent starting repayment date (6 days ago with weekly installments) due date to be tomorrow");
     }
 
+    /**
+     * Validates {@link Debt#nextPaymentDueDate} for {@link Debt} with associated {@link APIPaymentPlan} with {@link InstallmentFrequency#BI_WEEKLY} installments in recent past
+     * <p/>
+     * Expected: {@link Debt#nextPaymentDueDate} -> tomorrow's date
+     */
     @Test
     public void validateDebtWithPaymentPlanHasExpectedBiWeeklyDueDate() {
         final APIDebt   apiDebt   = new APIDebt(0, 100);
