@@ -48,10 +48,18 @@ Mock internal administration tool to manage client debts.
 * Scale is currently unknown, and thus may need to account for unbounded lists
     * For simplicity, I am assuming relatively small lists that can be processed in memory given a reasonable period of
       time
-* (Pending question) Payments can only be made through a payment plan
-    * API does not provide a way to associate a payment to a debt without a plan
-    * Unfortunately, I was unable to get a response from the recruiter on this question
+* (Question answered by the recruiter) Payments can only be made through a payment plan
+    * API does not provide a way to associate a payment to a debt without a plan, so no way to implement requirement
 
 ## Execution Instructions
 
 * Note: I created this on a Windows 10 machine, with an IntelliJ IDE 2020.3
+  * I would build this as an executable jar, but time constraints...
+* Ensure your system has the documented prerequisites installed and configured
+* Download & install IntelliJ IDE 2020.3
+  * Configure this according to your own preferences, but you will need to configure the IDE to have access to the
+    appropriate Java and Gradle locations on the system
+* Start `New project from version control...` and enter the Git clone URL for this project
+  > gradle build
+* Run project
+  > gradle run
